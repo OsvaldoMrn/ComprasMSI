@@ -1,6 +1,5 @@
+import { useAppContext } from '../../context/AppProvider';
+
 export function useComprasMSI() {
-  return {
-    compras: [],
-    isLoading: false,
-  };
+  return useAppContext();
 }

@@ -3,6 +3,7 @@
     "name": "ComprasMSI",
     "slug": "ComprasMSI",
     "version": "1.0.0",
+    "scheme": "comprasmsi",
     "platforms": [
       "android"
     ],
