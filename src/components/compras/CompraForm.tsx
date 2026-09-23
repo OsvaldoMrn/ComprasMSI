@@ -8,11 +8,12 @@ type CompraFormProps = {
   initialValue?: CompraMSI;
   submitLabel: string;
   onSubmit: (value: NuevaCompraMSI) => Promise<void>;
+  scrollable?: boolean;
 };
 
 const today = new Date().toISOString().slice(0, 10);
 
-export function CompraForm({ initialValue, submitLabel, onSubmit }: CompraFormProps) {
+export function CompraForm({ initialValue, submitLabel, onSubmit, scrollable = true }: CompraFormProps) {
   const [nombreProducto, setNombreProducto] = useState(initialValue?.nombreProducto ?? '');
   const [monto, setMonto] = useState(
     initialValue ? formatMinorAsInput(initialValue.montoTotalCentavos) : ''
@@ -53,8 +54,8 @@ export function CompraForm({ initialValue, submitLabel, onSubmit }: CompraFormPr
     }
   }
 
-  return (
-    <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+  const formContent = (
+    <>
       <Field label="Producto" value={nombreProducto} onChangeText={setNombreProducto} error={errors.nombreProducto} />
       <Field label="Monto total (MXN)" value={monto} onChangeText={setMonto} keyboardType="decimal-pad" error={errors.montoTotalCentavos} />
       <Field label="Número de meses" value={meses} onChangeText={setMeses} keyboardType="number-pad" error={errors.mesesAPagar} />
@@ -67,8 +68,18 @@ export function CompraForm({ initialValue, submitLabel, onSubmit }: CompraFormPr
       <Pressable style={[styles.button, isSaving && styles.disabled]} disabled={isSaving} onPress={() => void handleSubmit()}>
         <Text style={styles.buttonText}>{isSaving ? 'Guardando...' : submitLabel}</Text>
       </Pressable>
-    </ScrollView>
+    </>
   );
+
+  if (scrollable) {
+    return (
+      <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+        {formContent}
+      </ScrollView>
+    );
+  }
+
+  return <View style={styles.content}>{formContent}</View>;
 }
 
 type FieldProps = {

@@ -1,3 +1,5 @@
-export const pendingRepositoryCases = [
-  'persists and retrieves an MSI purchase',
-] as const;
+import { describe, it } from 'vitest';
+
+describe('Compras repository', () => {
+  it.todo('persists and retrieves an MSI purchase');
+});

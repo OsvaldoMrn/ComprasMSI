@@ -6,6 +6,8 @@ Documentacion del proyecto y decisiones de producto para la aplicacion Android d
 
 La aplicacion administra exclusivamente compras MSI. Suscripciones, gastos variables, backend, sincronizacion e iOS quedan fuera del alcance inicial.
 
+La aplicacion proyecta compromisos MSI y deuda restante; no registra ni confirma pagos bancarios reales.
+
 ## Estructura
 
 - `app/`: rutas y pantallas de Expo Router.
