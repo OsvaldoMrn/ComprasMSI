@@ -123,6 +123,10 @@ export function calculateActiveRemainingDebt(
     .reduce((total, compra) => total + calculateFinancialSummary(compra, asOfDate).remainingDebtMinor, 0);
 }
 
+export function isCompraFinished(compra: CompraMSI, asOfDate = formatDate(new Date())): boolean {
+  return calculateFinancialSummary(compra, asOfDate).remainingInstallments === 0;
+}
+
 export function calculateUpcomingCharges(
   compras: CompraMSI[],
   asOfDate = formatDate(new Date()),

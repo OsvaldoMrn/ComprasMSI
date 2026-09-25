@@ -18,7 +18,7 @@ export default function HomeScreen() {
         <View style={styles.metrics}>
           <Metric label="Compromiso mensual actual" value={formatMoney(monthlyCommitment)} />
           <Metric label="Deuda MSI proyectada" value={formatMoney(remainingDebt)} />
-          <Text style={styles.count}>{compras.length} compra(s) activa(s)</Text>
+          <Text style={styles.count}>{compras.filter((compra) => compra.estado === 'active').length} compra(s) activa(s)</Text>
         </View>
       )}
       {!isLoading ? <>

@@ -2,7 +2,7 @@ import type { PropsWithChildren } from 'react';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { archiveCompra, createCompra, listCompras, updateCompra } from '../database/repositories/comprasRepository';
+import { archiveCompra, createCompra, listCompras, restoreCompra, updateCompra } from '../database/repositories/comprasRepository';
 import type { CompraMSI, NuevaCompraMSI } from '../features/compras/types';
 
 type AppContextValue = {
@@ -13,6 +13,7 @@ type AppContextValue = {
   add: (input: NuevaCompraMSI) => Promise<void>;
   update: (id: number, input: NuevaCompraMSI) => Promise<void>;
   archive: (id: number) => Promise<void>;
+  restore: (id: number) => Promise<void>;
 };
 
 import { createContext, useContext } from 'react';
@@ -29,7 +30,7 @@ export function AppProvider({ children }: PropsWithChildren) {
     setIsLoading(true);
     setError(null);
     try {
-      setCompras(await listCompras(database));
+      setCompras(await listCompras(database, true));
     } catch {
       setError('No se pudieron cargar las compras.');
     } finally {
@@ -56,9 +57,14 @@ export function AppProvider({ children }: PropsWithChildren) {
     await refresh();
   }, [database, refresh]);
 
+  const restore = useCallback(async (id: number) => {
+    await restoreCompra(database, id);
+    await refresh();
+  }, [database, refresh]);
+
   const value = useMemo(
-    () => ({ compras, isLoading, error, refresh, add, update, archive }),
-    [compras, isLoading, error, refresh, add, update, archive]
+    () => ({ compras, isLoading, error, refresh, add, update, archive, restore }),
+    [compras, isLoading, error, refresh, add, update, archive, restore]
   );
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

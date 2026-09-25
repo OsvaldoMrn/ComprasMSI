@@ -55,9 +55,12 @@ const PURCHASE_QUERY = `
   LEFT JOIN categories c ON c.id = t.category_id
 `;
 
-export async function listCompras(database: SQLiteDatabase): Promise<CompraMSI[]> {
+export async function listCompras(
+  database: SQLiteDatabase,
+  includeArchived = false
+): Promise<CompraMSI[]> {
   const rows = await database.getAllAsync<CompraRow>(
-    `${PURCHASE_QUERY} WHERE t.archived_at IS NULL ORDER BY t.transaction_date DESC, t.id DESC`
+    `${PURCHASE_QUERY}${includeArchived ? '' : ' WHERE t.archived_at IS NULL'} ORDER BY t.transaction_date DESC, t.id DESC`
   );
   return rows.map(mapCompra);
 }
@@ -316,10 +319,20 @@ export async function archiveCompra(database: SQLiteDatabase, id: number): Promi
   );
 }
 
+export async function restoreCompra(database: SQLiteDatabase, id: number): Promise<void> {
+  const now = new Date().toISOString();
+  await database.runAsync(
+    'UPDATE transactions SET archived_at = NULL, updated_at = ? WHERE id = ?',
+    now,
+    id
+  );
+}
+
 export type ComprasRepository = {
   list: typeof listCompras;
   getById: typeof getCompraById;
   create: typeof createCompra;
   update: typeof updateCompra;
   archive: typeof archiveCompra;
+  restore: typeof restoreCompra;
 };
