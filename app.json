@@ -4,13 +4,15 @@
     "slug": "ComprasMSI",
     "version": "1.0.0",
     "scheme": "comprasmsi",
+    "userInterfaceStyle": "dark",
     "platforms": [
       "android"
     ],
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
     "android": {
+      "package": "com.comprasmsi.app",
+      "versionCode": 1,
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/android-icon-foreground.png",
@@ -21,7 +23,8 @@
     },
     "plugins": [
       "expo-router",
-      "expo-sqlite"
+      "expo-sqlite",
+      "expo-font"
     ]
   }
 }

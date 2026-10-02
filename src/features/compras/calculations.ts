@@ -21,6 +21,7 @@ export type CompraFinancialSummary = {
 export type UpcomingCharge = Installment & {
   compraId: number;
   nombreProducto: string;
+  totalInstallments: number;
 };
 
 export type MonthlyProjection = {
@@ -137,7 +138,7 @@ export function calculateUpcomingCharges(
     .filter((compra) => compra.estado === 'active')
     .flatMap((compra) => calculateInstallments(compra, asOfDate)
       .filter((installment) => installment.dueDate >= asOfDate && installment.dueDate <= endDate)
-      .map((installment) => ({ ...installment, compraId: compra.id, nombreProducto: compra.nombreProducto })))
+      .map((installment) => ({ ...installment, compraId: compra.id, nombreProducto: compra.nombreProducto, totalInstallments: compra.mesesAPagar })))
     .sort((first, second) => first.dueDate.localeCompare(second.dueDate) || first.compraId - second.compraId);
 }
 
