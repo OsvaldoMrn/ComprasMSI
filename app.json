@@ -25,6 +25,12 @@
       "expo-router",
       "expo-sqlite",
       "expo-font"
-    ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "d63599cf-85d7-4dae-837f-badc8dd01701"
+      }
+    }
   }
 }
